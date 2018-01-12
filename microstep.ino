@@ -4,50 +4,75 @@ Servo myservo;
 int pos=0;
 int Index;
 
+// init X axis variables
+int xStep = 11;
+int xDirection = 2;
+int xEnable = 3;
+
+// init Y axis variables
+int yStep = 4;
+int yDirection = 5;
+int yEnable = 6;
+
+// init Z axis variables
+int zStep = 8;
+int zDirection = 9;
+int zEnable = 10;
+
+// init claw pin
+int clawPin = 7;
+
 void setup(){
-  myservo.attach(7);
-  pinMode(6, OUTPUT); //Enable
-  pinMode(4, OUTPUT); //Step
-  pinMode(5, OUTPUT); //Direction
-  pinMode(10, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(2, OUTPUT);
+  myservo.attach(clawPin);
+
+  // init X Pins
+  pinMode(xStep, OUTPUT);
+  pinMode(xDirection, OUTPUT);
+  pinMode(xEnable, OUTPUT);
+
+  // init Y Pins
+  pinMode(yStep, OUTPUT);
+  pinMode(yDirection, OUTPUT);
+  pinMode(yEnable, OUTPUT);
+
+  // init Y Pins
+  pinMode(zStep, OUTPUT);
+  pinMode(zDirection, OUTPUT);
+  pinMode(zEnable, OUTPUT);
   
-  digitalWrite(6,LOW);
-  digitalWrite(10,LOW);
-  digitalWrite(3,LOW);
+  // Enable Pins
+  digitalWrite(xEnable,LOW);
+  digitalWrite(yEnable,LOW);
+  digitalWrite(zEnable,LOW);
 }
 
 void loop(){
-  digitalWrite(8,LOW);
+  digitalWrite(zStep,LOW);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
 
   delay(1000);
-  digitalWrite(4,LOW);
+  digitalWrite(yStep,LOW);
 
   for(Index = 0; Index < 10000; Index++){
-    digitalWrite(5,HIGH);
+    digitalWrite(yDirection,HIGH);
     delayMicroseconds(400);
-    digitalWrite(5,LOW);
+    digitalWrite(yDirection,LOW);
     delayMicroseconds(400);
   }
 
   delay(1000);
-  digitalWrite(8,HIGH);
+  digitalWrite(zStep,HIGH);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
 
@@ -58,43 +83,43 @@ void loop(){
     myservo.write(pos);
   }
 
-  digitalWrite(8,LOW);
+  digitalWrite(zStep,LOW);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
 
   delay(1000);
-  digitalWrite(4,HIGH);
+  digitalWrite(yStep,HIGH);
 
   for(Index = 0; Index < 10000; Index++){
-    digitalWrite(5,HIGH);
+    digitalWrite(yDirection,HIGH);
     delayMicroseconds(400);
-    digitalWrite(5,LOW);
+    digitalWrite(yDirection,LOW);
     delayMicroseconds(400);
   }
 
   delay(1000);
  
-  digitalWrite(11,HIGH);
+  digitalWrite(xStep,HIGH);
 
   for(Index = 0; Index < 10000; Index++){
-    digitalWrite(2,HIGH);
+    digitalWrite(xDirection,HIGH);
     delayMicroseconds(200);
-    digitalWrite(2,LOW);
+    digitalWrite(xDirection,LOW);
     delayMicroseconds(200);
   }
 
   delay(1000);
-  digitalWrite(8,HIGH);
+  digitalWrite(zStep,HIGH);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
 
@@ -106,22 +131,22 @@ void loop(){
   }
 
 
-  digitalWrite(8,LOW);
+  digitalWrite(zStep,LOW);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
 
   delay(1000);
-  digitalWrite(11,LOW);
+  digitalWrite(xStep,LOW);
 
   for(Index = 0; Index < 10000; Index++){
-    digitalWrite(2,HIGH);
+    digitalWrite(xDirection,HIGH);
     delayMicroseconds(200);
-    digitalWrite(2,LOW);
+    digitalWrite(xDirection,LOW);
     delayMicroseconds(200);
   }
 
@@ -132,12 +157,12 @@ void loop(){
     myservo.write(pos);
   }
 
-  digitalWrite(8,HIGH);
+  digitalWrite(zStep,HIGH);
 
   for(Index = 0; Index < 2600; Index++){
-    digitalWrite(9,HIGH);
+    digitalWrite(zDirection,HIGH);
     delayMicroseconds(250);
-    digitalWrite(9,LOW);
+    digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
   
