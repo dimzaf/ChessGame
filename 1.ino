@@ -57,57 +57,77 @@ void setup() {
 }
 
 void loop() {
-  // wait for input  
   Serial.println("Give me Axis");
   while(Serial.available()==0);
-  axisInput = Serial.readString();
 
-  Serial.println("Give me step");
-  while(Serial.available()==0);
-  stepInput = Serial.parseInt();
 
-  Serial.println("Give me volt");
-  while(Serial.available()==0);
-  voltInput = Serial.parseInt();
 
-  delay(1000);
 
-  if(axisInput != NULL){
-    int direction;
-    int step;
-    int degrees;
 
-    if(axisInput == "X"){
-      direction = xDirection;
-      step = xStep;
-    }else if(axisInput == "Y"){
-      direction = yDirection;
-      step = yStep;
-    }else if(axisInput == "Z"){
-      direction = zDirection;
-      step = zStep;
-    }
 
-    if(direction != NULL){
-      digitalWrite(step, voltInput);
+
+
+
+
+
+
+
+
+
+
+
+
+  // wait for input  
+  // Serial.println("Give me Axis");
+  // while(Serial.available()==0);
+  // axisInput = Serial.readString();
+
+  // Serial.println("Give me step");
+  // while(Serial.available()==0);
+  // stepInput = Serial.parseInt();
+
+  // Serial.println("Give me volt");
+  // while(Serial.available()==0);
+  // voltInput = Serial.parseInt();
+
+  // delay(1000);
+
+  // if(axisInput != NULL){
+  //   int direction;
+  //   int step;
+  //   int degrees;
+
+  //   if(axisInput == "X"){
+  //     direction = xDirection;
+  //     step = xStep;
+  //   }else if(axisInput == "Y"){
+  //     direction = yDirection;
+  //     step = yStep;
+  //   }else if(axisInput == "Z"){
+  //     direction = zDirection;
+  //     step = zStep;
+  //   }
+
+  //   if(direction != NULL){
+  //     digitalWrite(step, voltInput);
       
-      for(Index = 0; Index < stepInput; Index++){
-        digitalWrite(direction,1);
-        delayMicroseconds(400);
-        digitalWrite(direction,0);
-        delayMicroseconds(400);
-      }
+  //     for(Index = 0; Index < stepInput; Index++){
+  //       digitalWrite(direction,1);
+  //       delayMicroseconds(400);
+  //       digitalWrite(direction,0);
+  //       delayMicroseconds(400);
+  //     }
 
-      delay(1000);
+  //     delay(1000);
 
-//      digitalWrite(step, !voltInput);
-//      
-//      for(Index = 0; Index < stepInput; Index++){
-//        digitalWrite(direction,1);
-//        delayMicroseconds(400);
-//        digitalWrite(direction,0);
-//        delayMicroseconds(400);
-//      }
-    }
-  }
+  //    digitalWrite(step, !voltInput);
+     
+  //    for(Index = 0; Index < stepInput; Index++){
+  //      digitalWrite(direction,1);
+  //      delayMicroseconds(400);
+  //      digitalWrite(direction,0);
+  //      delayMicroseconds(400);
+  //    }
+  //   }
+  // }
 }

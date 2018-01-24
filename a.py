@@ -31,7 +31,7 @@ for x in letters:
   yCells = list(reversed(range(8)))
   
   for y in range(8):
-    XY[x][y+1] = {"x": letters.index(x) * xColSteps, "y": yCells.index(y) * yColSteps}
+    XY[x][y+1] = [letters.index(x) * xColSteps, yCells.index(y) * yColSteps]
     
 # move pone to XY axis
 def move_pone(startpoint , endpoint):
@@ -40,9 +40,9 @@ def move_pone(startpoint , endpoint):
     "end": XY[list(endpoint)[0]][int(list(endpoint)[1])]
   }
 
+print(move_pone('C1', 'A2'))
 
-data = json.dumps(move_pone('A1', 'A2')).encode('utf-8')
-# print(data.decode('utf-8'))
+data = json.dumps(move_pone('H4', 'D4')).encode('utf-8')
 
 arduino.write(data)
 print(arduino.readline())

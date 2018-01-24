@@ -29,7 +29,7 @@ bool isOnStartPoint = false;
 void setup(){
   Serial.begin(9600);
   
-//  myservo.attach(clawPin);
+  myservo.attach(clawPin);
 
   // init X Pins
   pinMode(xStep, OUTPUT);
@@ -59,16 +59,19 @@ void loop(){
 
   while(Serial.available()==0);
   delay(500);
-//  Serial.println(Serial.readString());
 
-  char json[] = "{}";
   StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.parseObject(json);
+  JsonObject& root = jsonBuffer.parseObject(Serial);
 
   if (root.success()) {
-    Serial.println("parseObject() success");
-  }else{
-    Serial.println("parseObject() failed");
+    int startX = root["start"][0];
+    int startY = root["start"][1];
+
+    int endX = root["end"][0];
+    int endY = root["end"][1];
+
+
+    movePone(startX, startY, endX, endY);
   }
 }
 
@@ -84,4 +87,98 @@ void goToStartPoint(){
 
   delay(500);
   isOnStartPoint = true;
+}
+
+void movePone(int startX, int startY, int endX, int endY){
+  digitalWrite(zStep, LOW);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  digitalWrite(xStep, HIGH);
+  for(Index = 0; Index < startX; Index++){
+    digitalWrite(xDirection,HIGH);
+    delayMicroseconds(200);
+    digitalWrite(xDirection,LOW);
+    delayMicroseconds(200);
+  } 
+
+
+  delay(1000);
+  digitalWrite(yStep,LOW);
+  for(Index = 0; Index < startY + 2300; Index++){
+    digitalWrite(yDirection,HIGH);
+    delayMicroseconds(400);
+    digitalWrite(yDirection,LOW);
+    delayMicroseconds(400);
+  }
+
+
+  delay(1000);
+  digitalWrite(zStep,HIGH);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  for(pos=30;pos>=1;pos -=1){
+    delay(80);
+    myservo.write(pos);
+  }
+
+
+  delay(1000);
+  digitalWrite(zStep, LOW);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  digitalWrite(yStep,HIGH);
+  for(Index = 0; Index < startY + 2300; Index++){
+    digitalWrite(yDirection,HIGH);
+    delayMicroseconds(400);
+    digitalWrite(yDirection,LOW);
+    delayMicroseconds(400);
+  }
+
+
+  delay(1000);
+  digitalWrite(xStep, LOW);
+  for(Index = 0; Index < startX; Index++){
+    digitalWrite(xDirection,HIGH);
+    delayMicroseconds(200);
+    digitalWrite(xDirection,LOW);
+    delayMicroseconds(200);
+  } 
+
+
+  delay(1000);
+  digitalWrite(zStep,HIGH);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  for(pos=0;pos<30;pos +=1){
+    delay(80);
+    myservo.write(pos);
+  }
 }
