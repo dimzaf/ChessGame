@@ -53,11 +53,13 @@ void setup(){
 }
 
 void loop(){    
+  while(Serial.available()==0);
+  
   if(!isOnStartPoint){
     goToStartPoint();
+    isOnStartPoint = true;
   }
-
-  while(Serial.available()==0);
+  
   delay(500);
 
   StaticJsonBuffer<200> jsonBuffer;
@@ -70,8 +72,15 @@ void loop(){
     int endX = root["end"][0];
     int endY = root["end"][1];
 
+    if(endX && endY){
+      movePone(startX, startY, endX, endY);
+    }else{
+      movePone(startX, startY, startX, startY);
+    }
 
-    movePone(startX, startY, endX, endY);
+    delay(500);
+
+    Serial.println(200);
   }
 }
 
@@ -86,7 +95,6 @@ void goToStartPoint(){
   }
 
   delay(500);
-  isOnStartPoint = true;
 }
 
 void movePone(int startX, int startY, int endX, int endY){
@@ -148,7 +156,7 @@ void movePone(int startX, int startY, int endX, int endY){
 
   delay(1000);
   digitalWrite(yStep,HIGH);
-  for(Index = 0; Index < startY + 2300; Index++){
+  for(Index = 0; Index < endY + 2300; Index++){
     digitalWrite(yDirection,HIGH);
     delayMicroseconds(400);
     digitalWrite(yDirection,LOW);
@@ -158,7 +166,7 @@ void movePone(int startX, int startY, int endX, int endY){
 
   delay(1000);
   digitalWrite(xStep, LOW);
-  for(Index = 0; Index < startX; Index++){
+  for(Index = 0; Index < endX; Index++){
     digitalWrite(xDirection,HIGH);
     delayMicroseconds(200);
     digitalWrite(xDirection,LOW);

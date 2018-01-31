@@ -34,15 +34,22 @@ for x in letters:
     XY[x][y+1] = [letters.index(x) * xColSteps, yCells.index(y) * yColSteps]
     
 # move pone to XY axis
-def move_pone(startpoint , endpoint):
+def move_pone(startpoint , endpoint=False):
   return {
     "start": XY[list(startpoint)[0]][int(list(startpoint)[1])],
-    "end": XY[list(endpoint)[0]][int(list(endpoint)[1])]
+    "end": XY[list(endpoint)[0]][int(list(endpoint)[1])] if endpoint else None
   }
 
-print(move_pone('C1', 'A2'))
+# data = json.dumps(move_pone('D1')).encode('utf-8')
+# arduino.write(data)
 
-data = json.dumps(move_pone('H4', 'D4')).encode('utf-8')
+# time.sleep(1)
 
-arduino.write(data)
-print(arduino.readline())
+# print(arduino.readline())
+
+# time.sleep(1)
+
+print(move_pone('G8', 'A1'))
+
+# data = json.dumps(move_pone('G8', 'A1')).encode('utf-8')
+# arduino.write(data)
