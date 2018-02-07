@@ -72,10 +72,10 @@ void loop(){
     int endX = root["end"][0];
     int endY = root["end"][1];
 
-    if(endX && endY){
-      movePone(startX, startY, endX, endY);
+    if(endX < 0 && endY < 0){
+      movePone(startX, startY);
     }else{
-      movePone(startX, startY, startX, startY);
+      replacePone(startX, startY, endX, endY);
     }
 
     delay(500);
@@ -97,7 +97,102 @@ void goToStartPoint(){
   delay(500);
 }
 
-void movePone(int startX, int startY, int endX, int endY){
+void movePone(int pointX, int pointY){
+  digitalWrite(zStep, LOW);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  digitalWrite(xStep, HIGH);
+  for(Index = 0; Index < pointX; Index++){
+    digitalWrite(xDirection,HIGH);
+    delayMicroseconds(200);
+    digitalWrite(xDirection,LOW);
+    delayMicroseconds(200);
+  } 
+
+
+  delay(1000);
+  digitalWrite(yStep,LOW);
+  for(Index = 0; Index < pointY + 2300; Index++){
+    digitalWrite(yDirection,HIGH);
+    delayMicroseconds(400);
+    digitalWrite(yDirection,LOW);
+    delayMicroseconds(400);
+  }
+
+
+  delay(1000);
+  digitalWrite(zStep,HIGH);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  for(pos=30;pos>=1;pos -=1){
+    delay(80);
+    myservo.write(pos);
+  }
+
+
+  delay(1000);
+  digitalWrite(zStep, LOW);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  digitalWrite(yStep,HIGH);
+  for(Index = 0; Index < pointY + 2300; Index++){
+    digitalWrite(yDirection,HIGH);
+    delayMicroseconds(400);
+    digitalWrite(yDirection,LOW);
+    delayMicroseconds(400);
+  }
+
+
+  delay(1000);
+  digitalWrite(xStep, LOW);
+  for(Index = 0; Index < pointX; Index++){
+    digitalWrite(xDirection,HIGH);
+    delayMicroseconds(200);
+    digitalWrite(xDirection,LOW);
+    delayMicroseconds(200);
+  } 
+
+
+  delay(1000);
+  digitalWrite(zStep,HIGH);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+
+  delay(1000);
+  for(pos=0;pos<30;pos +=1){
+    delay(80);
+    myservo.write(pos);
+  }
+}
+
+
+void replacePone(int startX, int startY, int endX, int endY){
   digitalWrite(zStep, LOW);
   for(Index = 0; Index < 2600; Index++){
     digitalWrite(zDirection,HIGH);
@@ -152,6 +247,56 @@ void movePone(int startX, int startY, int endX, int endY){
     digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
   }
+  
+
+  delay(1000);
+  int pointY = startY-endY;
+  bool yHighLow = pointY > 0 ? HIGH : LOW;
+  
+  digitalWrite(yStep, yHighLow);
+  for(Index = 0; Index < abs(pointY); Index++){
+    digitalWrite(yDirection,HIGH);
+    delayMicroseconds(400);
+    digitalWrite(yDirection,LOW);
+    delayMicroseconds(400);
+  }
+
+
+  delay(1000);
+  int pointX = startX-endX;
+  bool xHighLow = pointX < 0 ? HIGH : LOW;
+  
+  digitalWrite(xStep, xHighLow);
+  for(Index = 0; Index < abs(pointX); Index++){
+    digitalWrite(xDirection,HIGH);
+    delayMicroseconds(200);
+    digitalWrite(xDirection,LOW);
+    delayMicroseconds(200);
+  } 
+
+
+  delay(1000);
+  digitalWrite(zStep,HIGH);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
+
+  delay(1000);
+  for(pos=0;pos<30;pos +=1){
+    delay(80);
+    myservo.write(pos);
+  }
+
+  digitalWrite(zStep, LOW);
+  for(Index = 0; Index < 2600; Index++){
+    digitalWrite(zDirection,HIGH);
+    delayMicroseconds(250);
+    digitalWrite(zDirection,LOW);
+    delayMicroseconds(250);
+  }
 
 
   delay(1000);
@@ -181,12 +326,5 @@ void movePone(int startX, int startY, int endX, int endY){
     delayMicroseconds(250);
     digitalWrite(zDirection,LOW);
     delayMicroseconds(250);
-  }
-
-
-  delay(1000);
-  for(pos=0;pos<30;pos +=1){
-    delay(80);
-    myservo.write(pos);
   }
 }

@@ -3,10 +3,8 @@ import json
 import time
 import pickle
 
-arduino = serial.Serial('COM9', 9600)
+arduino = serial.Serial('COM9', 9600) # init arduino devise to serial port
 time.sleep(1)
-
-# arduino = serial.Serial('COM9', 9600) # init arduino devise to serial port
 
 xStepCm = 240 # step per cm on X axis
 yStepCm = 230 # step per cm on Y axis
@@ -37,19 +35,24 @@ for x in letters:
 def move_pone(startpoint , endpoint=False):
   return {
     "start": XY[list(startpoint)[0]][int(list(startpoint)[1])],
-    "end": XY[list(endpoint)[0]][int(list(endpoint)[1])] if endpoint else None
+    "end": XY[list(endpoint)[0]][int(list(endpoint)[1])] if endpoint else [-1, -1]
   }
 
-# data = json.dumps(move_pone('D1')).encode('utf-8')
-# arduino.write(data)
+data = json.dumps(move_pone('G4')).encode('utf-8')
+arduino.write(data)
 
-# time.sleep(1)
+time.sleep(1)
 
-# print(arduino.readline())
+while(int(arduino.readline()) != 200):
+  pass
 
-# time.sleep(1)
+data = json.dumps(move_pone('E2', 'G4')).encode('utf-8')
+arduino.write(data)
 
-print(move_pone('G8', 'A1'))
+while(int(arduino.readline()) != 200):
+  pass
 
-# data = json.dumps(move_pone('G8', 'A1')).encode('utf-8')
-# arduino.write(data)
+time.sleep(4)
+
+data = json.dumps(move_pone('E7', 'A8')).encode('utf-8')
+arduino.write(data)
