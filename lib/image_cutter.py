@@ -14,9 +14,9 @@ def crop_image(path):
     width, height = img.size
     
     #actual values. Depends on webcam configuration
-    left = 320
-    right = width - 310
-    top = height - 90
+    left = 120
+    right = width - 120
+    top = height - 0
     bottom = 0
     
     bbox = [left, bottom, right, top]

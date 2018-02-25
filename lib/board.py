@@ -1,23 +1,26 @@
 import serial
 import json
 import pickle
+import time
 
-MOVE_DONE = b'200'
+MOVE_DONE = 1
 
 class Board:
-    xStepCm = 240 # step per cm on X axis
-    yStepCm = 230 # step per cm on Y axis
-
-    colWidthHeight = 5 # width & height of chessboard cell on cm
-
-    xColSteps = xStepCm * colWidthHeight # calc width of cell in steps
-    yColSteps = yStepCm * colWidthHeight # calc height of cell in steps
-
-    xFirstColStart = xColSteps * 0  # # steps on X axis to reach first column from X start point (white space)
-    yFirstColStart = yColSteps * 2 # steps on Y axis to reach first column from Y start point (white space)
-
     def __init__(self, com, boadrate=9600):
         self.board = serial.Serial(com, boadrate)
+
+        time.sleep(1)
+
+        self.xStepCm = 240 # step per cm on X axis
+        self.yStepCm = 230 # step per cm on Y axis
+
+        self.colWidthHeight = 5 # width & height of chessboard cell on cm
+
+        self.xColSteps = self.xStepCm * self.colWidthHeight # calc width of cell in steps
+        self.yColSteps = self.yStepCm * self.colWidthHeight # calc height of cell in steps
+
+        self.xFirstColStart = self.xColSteps * 0  # # steps on X axis to reach first column from X start point (white space)
+        self.yFirstColStart = self.yColSteps * 2 # steps on Y axis to reach first column from Y start point (white space)
 
         # create X, Y axis list
         letters = []
@@ -31,9 +34,9 @@ class Board:
           yCells = list(reversed(range(8)))
   
           for y in range(8):
-            self.axis[x][y+1] = [letters.index(x) * xColSteps, yCells.index(y) * yColSteps]
+            self.axis[x][y+1] = [letters.index(x) * self.xColSteps, yCells.index(y) * self.yColSteps]
 
-    def get_crdn(startpoint , endpoint=False):
+    def get_crdn(self, startpoint , endpoint=False):
         crdn = {
             "start": self.axis[list(startpoint)[0]][int(list(startpoint)[1])],
             "end": self.axis[list(endpoint)[0]][int(list(endpoint)[1])] if endpoint else [-1, -1]
@@ -42,9 +45,10 @@ class Board:
         return json.dumps(crdn).encode('utf-8')
 
     def make_move(self, startpoint, endpoint=False):
-        crdn = Board.get_crdn(startpoint , endpoint=False)
-        arduino.write(crdn)
+        crdn = self.get_crdn(startpoint , endpoint)
+
+        self.board.write(crdn)
         time.sleep(1)
 
-        while(arduino.readline() != MOVE_DONE):
+        while(int(self.board.readline()) != MOVE_DONE):
             pass

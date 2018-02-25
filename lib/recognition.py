@@ -10,24 +10,26 @@ OUT_DIR = "out"
 TESSERACT_DIR = "tesseract"
 
 def take_picture():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(1)
+
     retval, image = camera.read()
+
     cv2.imwrite(CHESS_IMAGE, image)
 
 def initialize(name):
     path = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'etc')) 
     os.chdir(path)
 
-    # os.path.exists(CHESS_IMAGE) and os.unlink(CHESS_IMAGE) # remove old chessboard image
+    os.path.exists(CHESS_IMAGE) and os.unlink(CHESS_IMAGE) # remove old chessboard image
     os.path.exists(OUT_DIR) and shutil.rmtree(OUT_DIR) # remove old images
 
-    # take_picture() # take current chessboard image
+    take_picture() # take current chessboard image
 
     time.sleep(3)
 
     image_cutter.cut_image(CHESS_IMAGE)
 
-    parser_tesseract.parse()
+    parser_tesseract.parse('test')
 
 def parse(name):    
     initialize(name)

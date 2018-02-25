@@ -1,12 +1,12 @@
-import serial
 import time
 import re
 import json
 import pickle
 from lib import sunfish as ai
-from lib import board
+from lib.board import Board
+from lib import recognition
 
-arduino = Board('COM9', 9600) # initialize arduino board
+arduino = Board('COM5', 9600) # initialize arduino board
 
 def print_pos(pos):
     print(' '.join(pos.board))
@@ -25,10 +25,14 @@ def main():
         move = None
 
         while move not in pos.gen_moves():
-            match = re.match('([a-h][1-8])'*2, str(input('Your move: ')).lower())
+            match = re.match('([a-h][1-8])'*2, str(input('Your move: ')).lower, re.IGNORECASE)
 
             if match:
                 move = ai.parse(match.group(1)), ai.parse(match.group(2))
+
+                if move not in pos.gen_moves():
+                    print("Invalid Move !")
+                    print("")
             else:
                 print("Invalid Move !")
                 print("")
@@ -44,7 +48,7 @@ def main():
             break
 
         # Fire up the engine to look for a move.
-        move, score = searcher.search(pos, secs=1)
+        move, score = searcher.search(pos, secs=2)
 
         if score == ai.MATE_UPPER:
             print("Checkmate!")
@@ -61,10 +65,26 @@ def main():
 
             # now move pone to the new place
             arduino.make_move(moves[0], moves[1])
-
         else:
             arduino.make_move(moves[0], moves[1])
 
         pos = pos.move(move)
 
-main()
+def camera_test():
+    recognition.parse('1')
+
+print("Menu Options:")
+print("-------------")
+print("1 - Start Game")
+print("2 - Camera Test")
+print("")
+
+user_input = int(input("What do you want? "))
+
+while user_input not in [1,2]:
+    user_input = int(input("What do you want? "))
+
+if user_input == 1:
+    main()
+elif user_input == 2:
+    camera_test()
