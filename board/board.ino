@@ -80,7 +80,7 @@ void loop(){
 
     delay(500);
 
-    Serial.println(200);
+    Serial.println(1);
   }
 }
 
