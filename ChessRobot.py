@@ -25,7 +25,7 @@ def main():
         move = None
 
         while move not in pos.gen_moves():
-            match = re.match('([a-h][1-8])'*2, str(input('Your move: ')).lower, re.IGNORECASE)
+            match = re.match('([a-h][1-8])'*2, input('Your move: '))
 
             if match:
                 move = ai.parse(match.group(1)), ai.parse(match.group(2))
