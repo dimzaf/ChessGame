@@ -1,6 +1,6 @@
 #include <Servo.h>
 #include <ArduinoJson.h>
-
+//βιβλιοθηκη για μεταδοση δεδομενων μεταξυ python και arduino
 Servo myservo;
 
 int pos=0;
@@ -54,10 +54,11 @@ void setup(){
 
 void loop(){    
   while(Serial.available()==0);
+  //περιμενει εισοδο απο python
   
   if(!isOnStartPoint){
     goToStartPoint();
-    isOnStartPoint = true;
+    isOnStartPoint = true;//τοποθετηση στην αρχικη θεση
   }
   
   delay(500);
@@ -66,25 +67,25 @@ void loop(){
   JsonObject& root = jsonBuffer.parseObject(Serial);
 
   if (root.success()) {
-    int startX = root["start"][0];
-    int startY = root["start"][1];
+    int startX = root["start"][0];//αρχικη θεση στον αξονα Χ
+    int startY = root["start"][1];//αρχικη θεση στον αξονα Υ(η τιμη ειναι σε βηματα)
 
-    int endX = root["end"][0];
-    int endY = root["end"][1];
+    int endX = root["end"][0];//τελικη θεση στον αξονα Χ
+    int endY = root["end"][1];//τελικη θεση στον αξονα Υ
 
     if(endX < 0 && endY < 0){
-      movePone(startX, startY);
+      movePone(startX, startY);//μετακινηση
     }else{
-      replacePone(startX, startY, endX, endY);
+      replacePone(startX, startY, endX, endY);//αντικατασταση
     }
 
     delay(500);
 
-    Serial.println(1);
+    Serial.println(1);//ολοκληρωθηκε η διεργασια για να συνεχισει τη διαδικασια
   }
 }
 
-void goToStartPoint(){
+void goToStartPoint(){                //τοποθετηση αρχικη θεση αρπαγης
   delay(500);
   digitalWrite(yStep, HIGH);
   for(Index = 0; Index < 2300; Index++){
@@ -250,7 +251,7 @@ void replacePone(int startX, int startY, int endX, int endY){
   
 
   delay(1000);
-  int pointY = startY-endY;
+  int pointY = startY-endY;//υπολογσμος σωστης θεσης στην περιπτωση της αντικαταστασης
   bool yHighLow = pointY > 0 ? HIGH : LOW;
   
   digitalWrite(yStep, yHighLow);
